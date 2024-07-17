@@ -25,6 +25,7 @@ function App() {
 	} = useStore();
 	const debouncedFromText = useDebounce(fromText, 300);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (debouncedFromText === "") return;
 
