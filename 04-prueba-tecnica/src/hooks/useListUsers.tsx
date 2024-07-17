@@ -16,11 +16,6 @@ export function useListUser() {
 				const res = await data.json();
 				setUsers(res.results);
 				original.current = res.results;
-
-				if (res.status !== 200) {
-					setError(true);
-					throw new Error("Error");
-				}
 			} catch (err) {
 				setError(true);
 				console.log(err);

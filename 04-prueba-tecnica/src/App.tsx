@@ -1,42 +1,31 @@
 import "./App.css";
+import { Header } from "./components/Header";
 import { ListOfUsers } from "./components/ListOfUsers";
 import { useListUser } from "./hooks/useListUsers";
-import { SortBy } from "./types.d";
 
 function App() {
 	const {
-		changeRowColor,
 		rowColor,
-		sorting,
-		toggleSortByCountry,
-		restoreUserList,
-		setFilterCountry,
 		handleChangeSort,
 		sortedUsers,
 		handleRemoveUser,
 		error,
+		changeRowColor,
+		setFilterCountry,
+		sorting,
+		toggleSortByCountry,
+		restoreUserList,
 	} = useListUser();
 	return (
 		<>
-			<h1>prueba tecnica</h1>
-			<header>
-				<button onClick={changeRowColor} type="button">
-					{!rowColor ? "colorear filas" : "descolorear filas"}
-				</button>
-				<button type="button" onClick={toggleSortByCountry}>
-					{sorting === SortBy.COUNTRY
-						? "No ordenar por país"
-						: "Ordenar por país"}
-				</button>
-				<button onClick={restoreUserList} type="button">
-					Restaurar estado inicial
-				</button>
-				<input
-					onChange={(event) => setFilterCountry(event.target.value)}
-					type="text"
-					placeholder="filtrar por pais"
-				/>
-			</header>
+			<Header
+				changeRowColor={changeRowColor}
+				restoreUserList={restoreUserList}
+				rowColor={rowColor}
+				setFilterCountry={setFilterCountry}
+				sorting={sorting}
+				toggleSortByCountry={toggleSortByCountry}
+			/>
 			<ListOfUsers
 				changeSorting={handleChangeSort}
 				users={sortedUsers}
