@@ -9,12 +9,15 @@ function App() {
 		handleChangeSort,
 		sortedUsers,
 		handleRemoveUser,
-		error,
+		isError,
 		changeRowColor,
 		setFilterCountry,
 		sorting,
 		toggleSortByCountry,
 		restoreUserList,
+		isLoading,
+		hasNextPage,
+		incrementPage,
 	} = useListUser();
 	return (
 		<>
@@ -26,13 +29,31 @@ function App() {
 				sorting={sorting}
 				toggleSortByCountry={toggleSortByCountry}
 			/>
-			<ListOfUsers
-				changeSorting={handleChangeSort}
-				users={sortedUsers}
-				removeUser={handleRemoveUser}
-				color={rowColor}
-			/>
-			{error && <h1>Error con la peticion</h1>}
+			{sortedUsers?.length > 0 && (
+				<>
+					<ListOfUsers
+						changeSorting={handleChangeSort}
+						users={sortedUsers}
+						removeUser={handleRemoveUser}
+						color={rowColor}
+					/>
+				</>
+			)}
+
+			{isLoading && <h2>Cargando...</h2>}
+			{isError && <h2>Error con la peticion</h2>}
+			{!isLoading && !isError && sortedUsers?.length === 0 && (
+				<p>No hay usuarios</p>
+			)}
+			{!isLoading && !isError && hasNextPage === true && (
+				<button type="button" onClick={incrementPage}>
+					Cargar más información
+				</button>
+			)}
+
+			{!isLoading && !isError && hasNextPage === false && (
+				<p>No hay más resultados</p>
+			)}
 		</>
 	);
 }

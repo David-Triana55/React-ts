@@ -20,6 +20,7 @@ export function ListOfUsers({
 					<th>Foto</th>
 					{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 					<th
+						className="button-filter-column"
 						onClick={() => {
 							changeSorting(SortBy.NAME);
 						}}
@@ -28,6 +29,7 @@ export function ListOfUsers({
 					</th>
 					{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 					<th
+						className="button-filter-column"
 						onClick={() => {
 							changeSorting(SortBy.LAST);
 						}}
@@ -36,6 +38,7 @@ export function ListOfUsers({
 					</th>
 					{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 					<th
+						className="button-filter-column"
 						onClick={() => {
 							changeSorting(SortBy.COUNTRY);
 						}}
