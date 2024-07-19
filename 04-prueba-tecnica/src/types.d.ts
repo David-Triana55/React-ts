@@ -1,3 +1,13 @@
+export interface Page {
+	users: Users[];
+	nextCursor?: number;
+}
+
+export interface InfiniteQueryData {
+	pages: Page[];
+	pageParams: number[];
+}
+
 export interface Users {
 	gender: string;
 	name: Name;
