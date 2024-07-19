@@ -38,7 +38,6 @@ export function ListOfUsers({
 					</th>
 					{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 					<th
-						className="button-filter-column"
 						onClick={() => {
 							changeSorting(SortBy.COUNTRY);
 						}}

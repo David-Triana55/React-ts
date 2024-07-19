@@ -1,23 +1,8 @@
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { SortBy, type Users } from "../types.d";
-
-const apiData = async ({ pageParam = 1 }: { pageParam?: number }) => {
-	const data = await fetch(
-		`https://randomuser.me/api/?page=${pageParam}&results=10&seed=david`,
-	);
-	if (!data.ok) {
-		throw new Error("Error fetching");
-	}
-	const res = await data.json();
-	const response: Users[] = res.results;
-	const currentPage = Number(res.info.page + 1);
-	const nextCursor = currentPage > 3 ? undefined : currentPage;
-	return {
-		users: response,
-		nextCursor,
-	};
-};
+import type { InfiniteQueryData, Users } from "../types.d";
+import { SortBy } from "../types.d";
+import { useUser } from "./useUser";
 
 export function useListUser() {
 	const queryClient = useQueryClient();
@@ -25,16 +10,9 @@ export function useListUser() {
 	const [filterCountry, setFilterCountry] = useState("");
 	const [sorting, setSorting] = useState<SortBy>(SortBy.NONE);
 
-	const { data, isLoading, isError, refetch, fetchNextPage, hasNextPage } =
-		useInfiniteQuery<{ nextCursor?: number; users?: Users[] }>({
-			queryKey: ["users"],
-			queryFn: apiData,
-			getNextPageParam: (lastPage) => lastPage.nextCursor,
-		});
+	const { fetchNextPage, refetch, users, isError, isLoading, hasNextPage } =
+		useUser();
 
-	console.log(data);
-
-	const users: Users[] = data?.pages?.flatMap((page) => page.users) ?? [];
 	const incrementPage = () => {
 		fetchNextPage();
 	};
@@ -46,7 +24,7 @@ export function useListUser() {
 	};
 
 	const handleRemoveUser = (email: string) => {
-		queryClient.setQueryData(["users"], (oldData: any) => {
+		queryClient.setQueryData<InfiniteQueryData>(["users"], (oldData) => {
 			console.log(oldData);
 			if (!oldData) {
 				console.warn("No old data available.");
@@ -55,7 +33,7 @@ export function useListUser() {
 
 			const updatedPages = oldData.pages.map((page) => ({
 				...page,
-				users: page.users.filter((user) => user.email !== email),
+				users: page.users.filter((user: Users) => user.email !== email),
 			}));
 
 			return {
